@@ -10,9 +10,10 @@ public class hash {
 
       int a = sc.nextInt();
       map.put("IND", 245);
-
+      map.put("PAK", 151);
+      int b = map.get("PAK");
       System.out.println(map);
-      System.out.println(a);
+      System.out.println(b);
       sc.close();
    }
 }
