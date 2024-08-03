@@ -1,18 +1,16 @@
 import java.util.Arrays;
 public class prefixsum {
    public static void main(String[] args) {
-      int[] arr = { -969, -948, 350, 150, -59, 724, 966, 430, 107, -809, -993, 337, 457, -713, 753, -617, -55, -91,
-            -791, 758, -779, -412, -578, -54, 506, 30, -587, 168, -100, -409, -238, 655, 410, -641, 624, -463, 548,
-            -517, 595, -959, 602, -650, -709, -164, 374, 20, -404, -979, 348, 199, 668, -516, -719, -266, -947, 999,
-            -582, 938, -100, 788, -873, -533, 728, -107, -352, -517, 807, -579, -690, -383, -187, 514, -691, 616, -65,
-            451, -400, 249, -481, 556, -202, -697, -776, 8, 844, -391, -11, -298, 195, -515, 93, -657, -477, 587 };
-      int B = 81;
-      int[][] C = { { 0, 3 }, { 1, 2 } };
+      int[] arr = { 2, 1, 8, 3, 9, 6 };
+      int B = 2;
+      int[][] mat = { { 0, 3 }, { 3, 5 }, { 1, 3 }, { 2, 4 } };
       // solve(arr, 4);
       // rangeSum(arr, B);
       // equlibriumIndex(arr);
       // specialIndex(arr);
-      pickFromBothSides(arr, B);
+      // pickFromBothSides(arr, B);
+      // inPlacePrefixSum(arr);
+      evenInRange(arr, mat);
    }
 
    static void solve(int[] A, int B) {
@@ -180,6 +178,7 @@ public class prefixsum {
       System.out.println(ans);
    }
 
+   // pickFromBothSides
    static void pickFromBothSides(int[] A, int B) {
 
       // !observation : Think of all posible combinations of removing elements from
@@ -226,5 +225,49 @@ public class prefixsum {
       }
       System.out.println("========");
       System.out.println(maxSum);
+   }
+
+   // In place prefix sum
+   static void inPlacePrefixSum(int[] A) {
+      int n = A.length;
+      // ! Approach 1
+      // int ps = A[0];
+      // for (int i = 1; i < n; i++) {
+      // ps = ps + A[i];
+      // A[i] = ps;
+      // }
+      // ! Approach 2
+      for (int i = 1; i < n; i++) {
+         A[i] += A[i - 1];
+      }
+
+      System.out.println(Arrays.toString(A));
+   }
+
+   // Even numbers in a range
+   static void evenInRange(int[] A, int[][] mat) {
+      int n = A.length;
+      // ! 1.) create a evenPrefix array
+      int[] psEven = new int[n];
+      int evenCount = 0;
+      for (int i = 0; i < n; i++) {
+         if (A[i] % 2 == 0) {
+            evenCount++;
+         }
+         psEven[i] = evenCount;
+      }
+
+      // ! 2.) Now loop through the given matrix of testcase to find any value
+      int rows = mat.length;
+      int[] ans = new int[rows];
+      for (int r = 0; r < rows; r++) {
+         if (mat[r][0] == 0) {
+            ans[r] = psEven[mat[r][1]];
+         } else {
+            ans[r] = psEven[mat[r][1]] - psEven[mat[r][0] - 1];
+         }
+
+      }
+      System.out.println(Arrays.toString(ans));
    }
 }
