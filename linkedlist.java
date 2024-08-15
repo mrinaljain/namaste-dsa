@@ -19,7 +19,7 @@ public class linkedlist {
       if (idx == 0) {
          // ! 2 set addres of newNod to the address of head
          newNode.next = head;
-         // ! 3 update the head of linkedlist as we are iserting at the begining
+         // ! 3 update the head of linkedlist as we are inserting at the begining
          head = newNode;
          return head;
 

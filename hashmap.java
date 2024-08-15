@@ -2,15 +2,173 @@ import java.util.*;
 
 public class hashmap {
    public static void main(String[] args) {
-      int[] arr = { 1, 2, 1, 3, 4, 3 };
-      int B = 3;
+      int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      int B = 6;
       // frequency();
       // firstDistinct();
       // distinctElements();
       // subarrayZero();
       // largestSubarrayZeroSum();
-      distinctWindow(arr, B);
+      // distinctWindow(arr, B);
+      // System.out.println(twoSumHashMap(arr, B));
+      // System.out.println(twoSumHashSet(arr, B));
+      // twoSumIndex(arr, B);
+      subArraySumK(arr, B);
    }
+
+   // Sub array with sum k
+   static void subArraySumK(int[] A, int B) {
+      int n = A.length;
+      int start = 0;
+      int end = 0;
+
+      // create prefixsum
+      int[] ps = new int[n];
+      ps[0] = A[0];
+      for (int i = 1; i < n; i++) {
+         ps[i] = ps[i - 1] + A[i];
+      }
+
+      // create hashmap of prefix sum , index
+      HashMap<Integer, Integer> map = new HashMap<>();
+      for (int i = 0; i < n; i++) {
+         if (!map.containsKey(ps[i])) {
+            map.put(ps[i], i);
+         }
+      }
+
+      // loop throughprefix sum and find if b - ps[i] = B
+      for (int i = 0; i < ps.length; i++) {
+         int a = ps[i];
+         int b = a + B;
+         if (a == b) {
+            if (map.containsKey(b)) {
+               start = i + 1;
+               end = map.get(b);
+               break;
+            }
+         }
+         if (a != b) {
+            if (map.containsKey(b)) {
+               start = i + 1;
+               end = map.get(b);
+               break;
+            }
+         }
+
+      }
+      System.out.println(start);
+      System.out.println(end);
+      if (start == 0 && end == 0) {
+         int[] arr = new int[1];
+         arr[0] = -1;
+         System.out.println(Arrays.toString(arr));
+         return;
+      }
+      int[] ans = new int[end - start + 1];
+      int m = end - start + 1;
+      for (int i = 0; i < m; i++) {
+         ans[i] = A[start];
+         start++;
+      }
+      // return ans;
+      System.out.println(Arrays.toString(ans));
+   }
+
+   // Two sum find indexes
+   static int[] twoSumIndex(int[] A, int K) {
+      int n = A.length;
+      int[] ans = new int[2];
+      HashMap<Integer, Integer> map = new HashMap<>();
+
+      for (int i = 0; i < n; i++) {
+         int a = A[i];
+         int b = K - a;
+         if (map.containsKey(b)) {
+            int value = map.get(b);
+            ans[0] = value + 1;
+            ans[1] = i + 1;
+            System.out.println(Arrays.toString(ans));
+            return ans;
+         }
+
+         if (!map.containsKey(a)) {
+            map.put(a, i);
+         }
+
+      }
+
+      return ans;
+   }
+
+   // Two Sum using hashmap
+   static boolean twoSumHashMap(int[] A, int K) {
+      // For sum of A[i] + A[j] to be equal to K
+      // for A[i] there needs to ba an A[j] which is equal to A[i] - K
+      // Just loop through array finding A[j] for every A[i]
+      // Finding A[j] can be done via hashmap also
+      int n = A.length;
+      int[] ans = new int[2];
+      // 1. create a frequency hashmap first
+      HashMap<Integer, Integer> map = new HashMap<>();
+      for (int i = 0; i < n; i++) {
+         // if value is already in map then increase the count
+         if (map.containsKey(A[i])) {
+            int value = map.get(A[i]);
+            map.put(A[i], ++value);
+         }
+         // if value is not present then add new node in hashmap
+         else {
+            map.put(A[i], 1);
+         }
+      }
+      // 2. loop through array and find if A[j] exists for A[i]
+
+      for (int i = 0; i < n; i++) {
+         int a = A[i];
+         int b = K - a;
+
+         if (a != b) {
+            if (map.containsKey(b)) {
+               return true;
+            }
+         }
+         if (a == b) {
+            if (map.containsKey(b)) {
+               int val = map.get(b);
+               if (val > 1) {
+                  // yes exists
+                  return true;
+               }
+            }
+         }
+
+      }
+      return false;
+
+   }
+
+   // Two Sum using hashset
+   static boolean twoSumHashSet(int[] A, int K) {
+      // look left approach
+      // at every step look left if b is present
+      // also at every etep keep adding new element for upcoming step
+      int n = A.length;
+      int[] ans = new int[2];
+      HashSet<Integer> set = new HashSet<>();
+
+      for (int i = 0; i < n; i++) {
+         int a = A[i];
+         int b = K - a;
+
+         if (set.contains(b)) {
+            return true;
+         }
+         set.add(a);
+      }
+      return false;
+   }
+
 
    // find frequency of given element
    static void frequency() {
@@ -241,5 +399,6 @@ public class hashmap {
       }
       System.out.println(Arrays.toString(ans));
    }
+
 
 }
