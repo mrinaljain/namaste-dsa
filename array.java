@@ -6,7 +6,7 @@ public class array {
    public static void main(String[] args) {
       int[] arr = { 1, 2, 1, 3, 4, 3 };
       int B = 3;
-      // targetSum(arr, B);
+      targetSum(arr, B);
 
    }
 

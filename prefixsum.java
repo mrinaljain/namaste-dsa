@@ -1,18 +1,52 @@
 import java.util.Arrays;
 public class prefixsum {
    public static void main(String[] args) {
-      int[] arr = { 2, 1, 8, 3, 9, 6 };
+      int[] arr = { 0, 0, 0, 0, 0, 0, 0 };
       int B = 2;
-      int[][] mat = { { 0, 3 }, { 3, 5 }, { 1, 3 }, { 2, 4 } };
+      int[][] mat = { { 1, 3, 6 }, { 3, 5, 8 }, { 1, 6, 8 } };
       // solve(arr, 4);
       // rangeSum(arr, B);
       // equlibriumIndex(arr);
       // specialIndex(arr);
       // pickFromBothSides(arr, B);
       // inPlacePrefixSum(arr);
-      evenInRange(arr, mat);
+      // evenInRange(arr, mat);
+      System.out.print(Arrays.toString(modify(arr, mat)));
+
    }
 
+   // given a all zero array perform all the querries
+   // q{ i , j , x} add x from i to jth index
+   static int[] modify(int[] A, int[][] querry) {
+      // intution: add ho rhi hai chize matlab prefix sum lagega
+      // aur another observation is regarding adding values and substraction values
+
+      // add values to the array from querries
+      for (int row = 0; row < querry.length; row++) {
+         int i = querry[row][0];
+         int j = querry[row][1];
+         int x = querry[row][2];
+
+         A[i] += x;
+         if (j == A.length - 1) {
+            continue;
+         } else {
+            A[j + 1] += (x - (2 * x));
+         }
+
+      }
+
+      // create prefix sum
+      int[] ps = new int[A.length];
+      ps[0] = A[0];
+
+      for (int i = 1; i < A.length; i++) {
+         ps[i] = ps[i - 1] + A[i];
+      }
+
+      return ps;
+
+   }
    static void solve(int[] A, int B) {
       int n = A.length;
       int start = 0;
@@ -270,4 +304,5 @@ public class prefixsum {
       }
       System.out.println(Arrays.toString(ans));
    }
+
 }
