@@ -7,10 +7,65 @@ public class array {
    public static void main(String[] args) {
       int[] arr = { 4, 2, -7, 3, 6, 9, 1, 8, 3, };
       int B = 3;
+      int[][] intervals = {
+            { 1, 5 },
+            { 8, 10 },
+            { 11, 14 },
+            { 15, 20 },
+            { 21, 24 },
+      };
+      int[] newInterval = { 12, 22 };
+
       // targetSum(arr, B);
       // System.out.println(largestNumber(arr));
-      System.out.println(firstMissingNaturanNumber(arr));
+      // System.out.println(firstMissingNaturanNumber(arr));
+      mergeIntervals(intervals, newInterval);
+   }
 
+   static void mergeIntervals(int[][] intervals, int[] newInterval) {
+      // ! Approach 1
+      // The idea is to insert the given interval N at an appropriate place and then
+      // print all the intervals(non-overlaping)
+
+      // 1. Compare and check for every interval that can new interval is overlapping
+      // or not.
+      // 2.if not overlaping then print the smaller interval and move forward
+      // ---- 2.1 if the non-overlapping prints the newupdated interval then we can
+      // print
+      // all the intervals after that as it is(because it is given that al intervals
+      // are non overlapping)
+      // 3.if overlapping then merge the 2 intervals and move forward
+
+      int row = intervals.length;
+
+      int s2 = newInterval[0];
+      int e2 = newInterval[1];
+
+      for (int i = 0; i < row; i++) {
+         int s1 = intervals[i][0];
+         int e1 = intervals[i][1];
+
+         if (s2 > e1) {
+            // non - overlapping case
+            System.out.println(s1 + "," + e1);
+         } else if (s1 > e2) {
+            // non - overlapping case
+            System.out.println(s2 + "," + e2);
+            for (int j = i; j < row; j++) {
+               System.out.println(intervals[j][0] + "," + intervals[j][1]);
+            }
+            return;
+         } else {
+            // overlapping case
+            s2 = Math.min(s1, s2);
+            e2 = Math.max(e1, e2);
+         }
+
+      }
+      // edge case
+      // if the code never went to else if condition then we need to print one last
+      // value of else case s2, e2
+      System.out.println(s2 + "," + e2);
    }
 
    static void swap(int[] ar, int a, int b) {
